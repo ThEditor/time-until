@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="nord">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="A beautiful, minimal countdown timer. Track the time until your next big moment." />
+  <meta name="theme-color" content="#2e3440" />
+  <title>Time Until</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏳</text></svg>" />
+</head>
+<body>
+  <!-- Ambient animated background -->
+  <div class="bg-gradient" id="bgGradient" aria-hidden="true"></div>
+  <div class="bg-noise" aria-hidden="true"></div>
+
+  <!-- Main content -->
+  <main class="container" id="mainContainer">
+    <!-- Label -->
+    <h1 class="label" id="label">New Year 2027</h1>
+
+    <!-- Countdown -->
+    <div class="countdown" id="countdown">
+      <div class="countdown-unit" id="unitDays">
+        <span class="countdown-value" id="days">000</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-separator" aria-hidden="true">:</div>
+      <div class="countdown-unit" id="unitHours">
+        <span class="countdown-value" id="hours">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-separator" aria-hidden="true">:</div>
+      <div class="countdown-unit" id="unitMinutes">
+        <span class="countdown-value" id="minutes">00</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-separator" aria-hidden="true">:</div>
+      <div class="countdown-unit" id="unitSeconds">
+        <span class="countdown-value" id="seconds">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+      <span class="progress-text" id="progressText">0% elapsed</span>
+    </div>
+
+    <!-- Completion state -->
+    <div class="completion hidden" id="completionState">
+      <div class="completion-icon">🎉</div>
+      <h2 class="completion-title">Time's Up!</h2>
+      <p class="completion-subtitle" id="completionLabel">The countdown has ended.</p>
+    </div>
+  </main>
+
+  <!-- Top-right controls -->
+  <div class="top-controls">
+    <button class="icon-btn" id="fullscreenBtn" title="Toggle fullscreen (F)" aria-label="Toggle fullscreen">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+      </svg>
+    </button>
+    <button class="icon-btn" id="shareBtn" title="Share (S)" aria-label="Share countdown">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+    </button>
+    <button class="icon-btn settings-btn" id="settingsBtn" title="Settings (,)" aria-label="Open settings">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Settings overlay -->
+  <div class="settings-overlay hidden" id="settingsOverlay">
+    <div class="settings-backdrop" id="settingsBackdrop"></div>
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-header">
+        <h2 class="settings-title">Settings</h2>
+        <button class="icon-btn settings-close" id="settingsClose" aria-label="Close settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="settings-body">
+        <!-- Label -->
+        <div class="settings-group">
+          <label class="settings-label" for="labelInput">Label</label>
+          <input type="text" class="settings-input" id="labelInput" placeholder="e.g. New Year 2027" maxlength="60" />
+        </div>
+
+        <!-- Target date -->
+        <div class="settings-group">
+          <label class="settings-label" for="dateInput">Target Date</label>
+          <input type="date" class="settings-input" id="dateInput" />
+        </div>
+
+        <!-- Target time -->
+        <div class="settings-group">
+          <label class="settings-label" for="timeInput">Target Time</label>
+          <input type="time" class="settings-input" id="timeInput" />
+        </div>
+
+        <!-- Creation date (for progress) -->
+        <div class="settings-group">
+          <label class="settings-label" for="creationDateInput">
+            Start Date <span class="settings-hint">(for progress bar)</span>
+          </label>
+          <input type="date" class="settings-input" id="creationDateInput" />
+        </div>
+
+        <!-- Theme -->
+        <div class="settings-group">
+          <label class="settings-label">Theme</label>
+          <div class="theme-grid" id="themeGrid">
+            <button class="theme-swatch" data-theme="midnight" title="Midnight">
+              <span class="swatch-colors">
+                <span style="background:#0a0a1a"></span>
+                <span style="background:#6366f1"></span>
+                <span style="background:#a5b4fc"></span>
+              </span>
+              <span class="swatch-name">Midnight</span>
+            </button>
+            <button class="theme-swatch" data-theme="nord" title="Nord">
+              <span class="swatch-colors">
+                <span style="background:#2e3440"></span>
+                <span style="background:#88c0d0"></span>
+                <span style="background:#eceff4"></span>
+              </span>
+              <span class="swatch-name">Nord</span>
+            </button>
+            <button class="theme-swatch" data-theme="aurora" title="Aurora">
+              <span class="swatch-colors">
+                <span style="background:#0f0c29"></span>
+                <span style="background:#a855f7"></span>
+                <span style="background:#06b6d4"></span>
+              </span>
+              <span class="swatch-name">Aurora</span>
+            </button>
+            <button class="theme-swatch" data-theme="sakura" title="Sakura">
+              <span class="swatch-colors">
+                <span style="background:#1a1020"></span>
+                <span style="background:#f472b6"></span>
+                <span style="background:#fbbf24"></span>
+              </span>
+              <span class="swatch-name">Sakura</span>
+            </button>
+            <button class="theme-swatch" data-theme="light" title="Light">
+              <span class="swatch-colors">
+                <span style="background:#f8fafc"></span>
+                <span style="background:#3b82f6"></span>
+                <span style="background:#1e293b"></span>
+              </span>
+              <span class="swatch-name">Light</span>
+            </button>
+            <button class="theme-swatch" data-theme="custom" title="Custom">
+              <span class="swatch-colors">
+                <span class="custom-swatch-c1" style="background:#1e1e2e"></span>
+                <span class="custom-swatch-c2" style="background:#7c3aed"></span>
+                <span class="custom-swatch-c3" style="background:#e0def4"></span>
+              </span>
+              <span class="swatch-name">Custom</span>
+            </button>
+          </div>
+          <!-- Custom theme color pickers -->
+          <div class="custom-theme-options collapsed" id="customThemeOptions">
+            <div class="color-picker-row">
+              <label for="customBg">Background</label>
+              <input type="color" id="customBg" value="#1e1e2e" />
+            </div>
+            <div class="color-picker-row">
+              <label for="customAccent">Accent</label>
+              <input type="color" id="customAccent" value="#7c3aed" />
+            </div>
+            <div class="color-picker-row">
+              <label for="customText">Text</label>
+              <input type="color" id="customText" value="#e0def4" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Show progress -->
+        <div class="settings-group settings-row">
+          <label class="settings-label" for="progressToggle">Show progress bar</label>
+          <label class="toggle">
+            <input type="checkbox" id="progressToggle" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Show seconds -->
+        <div class="settings-group settings-row">
+          <label class="settings-label" for="secondsToggle">Show seconds</label>
+          <label class="toggle">
+            <input type="checkbox" id="secondsToggle" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-footer">
+        <span class="settings-hint">Press <kbd>Esc</kbd> to close · <kbd>,</kbd> to open</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast hidden" id="toast">Link copied to clipboard</div>
+
+  <!-- Confetti canvas -->
+  <canvas class="confetti-canvas hidden" id="confettiCanvas" aria-hidden="true"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
